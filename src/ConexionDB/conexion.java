@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class conexion {
-    Connection conn;
+    static Connection conn;
 
     private Scanner s;
     private String host = "localhost";
@@ -32,8 +32,11 @@ public class conexion {
 
     }
 
+
     public void mostrarMenu(){
         int opc =0;
+
+
         while (opc != 4){
             System.out.println("Ingrese una opcion:");
             System.out.println("1. Inserte nueva persona");
@@ -52,6 +55,7 @@ public class conexion {
                     System.out.println("Ingrese el CUI o DPI:");
                     String cui = s.next();
                     System.out.println("Ingrese el municipio");
+                    municipio();
                     String muni = s.next();
 
                     try {
@@ -119,6 +123,25 @@ public class conexion {
                     break;
                 default:
             }
+        }
+    }
+
+    public void municipio(){
+        try {
+            //Sentencia para leer todos los datos de la tabla persona
+            String sql = "SELECT * FROM municipio";
+            Statement stmt = conn.createStatement();
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                System.out.print("Municipio: " + rs.getString("idmunicipio")+" |");
+                System.out.print("\tNombre: " + rs.getString("Nombre"));
+                System.out.print("\t | Departamento: " + rs.getString("Departamento_idDepartamento") + "\n");
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al leer la información de la tabla municipio: " + e.getMessage());
         }
     }
 
